@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Socket Client</title>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <script type="text/javascript" src="jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+  </head>
+  <body>
+    <div class="frame">
+      <div class="controls">
+        <div class="control-pane">
+          <table>
+            <tr>
+              <th>Status:</th>
+              <td class="status"></td>
+            </tr>
+            <tr>
+              <th>URL:</th>
+              <td><input type="text" id="endpoint" value="ws://localhost/" /></td>
+            </tr>
+            <tr>
+              <th>Protocol(s):</th>
+              <td><input type="text" id="protocols" value="" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td><label><input type="checkbox" value="1" id="reconnect" /> Auto-Reconnect</label></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td>
+                <input type="submit" id="btn_connect" value="Connect" />
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="control-pane">
+          <table>
+            <tr>
+              <th>&nbsp;</th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>Close Status:</th>
+              <td><input type="text" id="close_status" value="1000" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td id="close_status_text">&nbsp;</td>
+            </tr>
+            <tr>
+              <th>Close Reason:</th>
+              <td><input type="text" id="close_reason" value="" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td><input type="submit" id="btn_close" value="Close" /></td>
+            </tr>
+          </table>
+        </div>
+        <div class="control-pane">
+          <table>
+            <tr>
+              <th style="text-align: left;">Message Text</th>
+            </tr>
+            <tr>
+              <td><textarea id="message_text"></textarea></td>
+            </tr>
+            <tr>
+              <td><input type="submit" id="btn_send" value="Send" /></td>
+            </tr>
+          </table>
+        </div>
+      </div> <!-- /controls -->
+      <div class="log">
+        <input type="submit" id="btn_clear_log" value="Clear" />
+        <div class="entries">
+        </div>
+      </div> <!-- /log -->
+    </div> <!-- /frame -->
+  </body>
+</html>
