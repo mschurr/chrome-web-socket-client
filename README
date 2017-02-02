@@ -3,11 +3,15 @@ Web Socket Client for Chrome
 
 A simple UI for a web socket client that can be used to manually test web socket endpoints.
 
+To develop:
 1. Clone the repo.
 2. Go to 'chrome://extensions'.
 3. Check 'Developer Mode'.
 4. Choose 'Load Unpacked Extension...'.
-5. Browse to the location you downloaded the repo.
+5. Browse to the location where you downloaded the repo.
 6. Open the client by client 'Options' underneath 'Web Socket Client' in 'chrome://extensions' or by clicking the 'WS Client' browser action to the right of your address bar.
+7. Click 'Reload' in 'chrome://extensions' to reload code changes.
 
 This extension requires no permissions!
+
+It is available on the store at: https://chrome.google.com/webstore/detail/web-socket-client/lifhekgaodigcpmnakfhaaaboididbdn
