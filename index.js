@@ -1,4 +1,11 @@
 $(document).ready(function() {
+
+  var syncset = chrome.storage.sync.set;
+  var syncget = chrome.storage.sync.get;
+  var send_commands = [];
+  var command_index = 0;
+  $("#btn_send_next").prop('disabled', true);
+
   var ReadyState = {
     CONNECTING: 0,
     OPEN: 1,
@@ -280,17 +287,103 @@ $(document).ready(function() {
 
   var updateCloseText = function() {
     $("#close_status_text").text(closeCodeToString($("#close_status").val()));
-  }
+  };
 
   $("#btn_connect").on('click', function(event) {
     event.preventDefault();
     connect($("#endpoint").val(), $("#protocols").val());
   });
 
+  $("#btn_url_save").on('click', function(event) {
+    syncset({
+      ws_url: $("#endpoint").val(),
+      ws_protocols: $("#protocols").val(),
+      ws_reconnect: $("#reconnect")[0].checked
+    }, function() {
+      console.log("All saved");
+    });
+  });
+
+  $("#btn_url_restore").on('click', function(event) {
+    syncget(["ws_url", "ws_protocols", "ws_reconnect"], function(res) {
+      if (res) {
+        $("#endpoint").val(res.ws_url);
+        $("#protocols").val(res.ws_protocols);
+        $("#reconnect")[0].checked = res.ws_reconnect;
+      }
+      console.log("All restored", res);
+    });
+  });
+
+  function histUpdate() {
+    $("#btn_send_next").prop('disabled', !send_commands[command_index-1]);
+    $("#btn_send_prev").prop('disabled', !send_commands[command_index+1]);
+    $("#btn_send_index").val(command_index+"");
+  }
+
   $("#btn_send").on('click', function(event) {
     event.preventDefault();
-    sendText($("#message_text").val());
+    send_commands = send_commands || [];
+    var msg = $("#message_text").val();
+    if (msg != send_commands[command_index]) {
+      if (command_index == 0) {
+        send_commands.splice(0, send_commands.length - 9, msg);
+      }
+      else {
+        send_commands[command_index] = msg;
+      }
+    }
+    histUpdate();
+    console.log("Send", msg, command_index, send_commands);
+
+    sendText(msg);
     scrollLogToBottom();
+  });
+
+  $("#btn_send_prev").on('click', function(event) {
+    command_index = send_commands[command_index+1] ? command_index+1 : command_index;
+    if (send_commands[command_index]) {
+      $("#message_text").val(send_commands[command_index]);
+    }
+    histUpdate();
+  });
+
+  $("#btn_send_next").on('click', function(event) {
+    command_index = send_commands[command_index-1] ? command_index-1 : command_index;
+    command_index = Math.max(command_index - 1, 0);
+    if (send_commands[command_index]) {
+      $("#message_text").val(send_commands[command_index]);
+    }
+    histUpdate();
+  });
+
+  $("#btn_send_save").on('click', function(event) {
+    syncset({
+      message_text: $("#message_text").val(),
+      message_hist: send_commands,
+    }, function() {
+      console.log("All saved");
+    });
+  });
+
+  $("#btn_send_restore").on('click', function(event) {
+    syncget(["message_text", "message_hist"], function(res) {
+      if (res) {
+        $("#message_text").val(res.message_text);
+        send_commands = res.message_hist || [];
+      }
+      console.log("All restored", res);
+    });
+  });
+
+  $("#btn_send_format").on('click', function(event) {
+    var fmt;
+    try {
+      fmt = JSON.parse($("#message_text").val());
+    } catch(e) {}
+    if (fmt) {
+        $("#message_text").val(JSON.stringify(fmt, null, 2));
+    }
   });
 
   $("#btn_close").on('click', function(event) {

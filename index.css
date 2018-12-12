@@ -60,6 +60,7 @@ html, body {
   padding: 5px;
   font-size: 16px;
   line-height: 20px;
+  word-break: break-all;
 }
 
 .log .entry .publisher .timestamp {
@@ -175,6 +176,11 @@ html, body {
   padding: 0;
   margin: 0;
   border-collapse: collapse;
+}
+
+.buttons table th {
+  text-align: left;
+  padding: 3px;
 }
 
 .controls table th {
