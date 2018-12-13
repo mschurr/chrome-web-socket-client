@@ -1,7 +1,13 @@
 $(document).ready(function() {
 
-  var syncset = chrome.storage.sync.set;
-  var syncget = chrome.storage.sync.get;
+  function storageSet(key, obj) {
+    window.localStorage.setItem(key, JSON.stringify(obj));
+  }
+  function storageGet(key) {
+    var obj = window.localStorage.getItem(key);
+    return obj ? JSON.parse(obj) : null;
+  }
+
   var send_commands = [];
   var command_index = 0;
   $("#btn_send_next").prop('disabled', true);
@@ -295,24 +301,20 @@ $(document).ready(function() {
   });
 
   $("#btn_url_save").on('click', function(event) {
-    syncset({
+    storageSet("connection", {
       ws_url: $("#endpoint").val(),
       ws_protocols: $("#protocols").val(),
       ws_reconnect: $("#reconnect")[0].checked
-    }, function() {
-      console.log("All saved");
     });
   });
 
   $("#btn_url_restore").on('click', function(event) {
-    syncget(["ws_url", "ws_protocols", "ws_reconnect"], function(res) {
-      if (res) {
-        $("#endpoint").val(res.ws_url);
-        $("#protocols").val(res.ws_protocols);
-        $("#reconnect")[0].checked = res.ws_reconnect;
-      }
-      console.log("All restored", res);
-    });
+    var res = storageGet("connection");
+    if (res) {
+      $("#endpoint").val(res.ws_url);
+      $("#protocols").val(res.ws_protocols);
+      $("#reconnect")[0].checked = res.ws_reconnect;
+    }
   });
 
   function histUpdate() {
@@ -334,7 +336,6 @@ $(document).ready(function() {
       }
     }
     histUpdate();
-    console.log("Send", msg, command_index, send_commands);
 
     sendText(msg);
     scrollLogToBottom();
@@ -358,22 +359,18 @@ $(document).ready(function() {
   });
 
   $("#btn_send_save").on('click', function(event) {
-    syncset({
+    storageSet("message", {
       message_text: $("#message_text").val(),
       message_hist: send_commands,
-    }, function() {
-      console.log("All saved");
     });
   });
 
   $("#btn_send_restore").on('click', function(event) {
-    syncget(["message_text", "message_hist"], function(res) {
-      if (res) {
-        $("#message_text").val(res.message_text);
-        send_commands = res.message_hist || [];
-      }
-      console.log("All restored", res);
-    });
+    var res = storageGet("message");
+    if (res) {
+      $("#message_text").val(res.message_text);
+      send_commands = res.message_hist || [];
+    }
   });
 
   $("#btn_send_format").on('click', function(event) {

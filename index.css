@@ -178,11 +178,6 @@ html, body {
   border-collapse: collapse;
 }
 
-.buttons table th {
-  text-align: left;
-  padding: 3px;
-}
-
 .controls table th {
   text-align: right;
   padding: 3px;
