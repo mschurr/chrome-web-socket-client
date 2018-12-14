@@ -351,7 +351,6 @@ $(document).ready(function() {
 
   $("#btn_send_next").on('click', function(event) {
     command_index = send_commands[command_index-1] ? command_index-1 : command_index;
-    command_index = Math.max(command_index - 1, 0);
     if (send_commands[command_index]) {
       $("#message_text").val(send_commands[command_index]);
     }
