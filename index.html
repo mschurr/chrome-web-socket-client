@@ -24,11 +24,15 @@
               <td><input type="text" id="protocols" value="" /></td>
             </tr>
             <tr>
-              <th></th>
+              <td>
+                <input type="submit" id="btn_url_save" value="Save" />
+              </th>
               <td><label><input type="checkbox" value="1" id="reconnect" /> Auto-Reconnect</label></td>
             </tr>
             <tr>
-              <th></th>
+              <td>
+                <input type="submit" id="btn_url_restore" value="Restore" />
+              </th>
               <td>
                 <input type="submit" id="btn_connect" value="Connect" />
               </td>
@@ -60,7 +64,7 @@
           </table>
         </div>
         <div class="control-pane">
-          <table>
+          <table style="position:relative; z-index:10;" >
             <tr>
               <th style="text-align: left;">Message Text</th>
             </tr>
@@ -68,7 +72,15 @@
               <td><textarea id="message_text"></textarea></td>
             </tr>
             <tr>
-              <td><input type="submit" id="btn_send" value="Send" /></td>
+              <td>
+                <input type="submit" id="btn_send" value="Send" />
+                <input type="submit" id="btn_send_prev" value="Prev" />
+                <input type="submit" id="btn_send_next" value="Next" />
+                <input type="label"  id="btn_send_index" value="0" style="width:6px; border:0;" />
+                <input type="submit" id="btn_send_format" value="Format" style="float:right;"/>
+                <input type="submit" id="btn_send_restore" value="Restore" style="float:right;"/>
+                <input type="submit" id="btn_send_save" value="Save" style="float:right;"/>
+              </td>
             </tr>
           </table>
         </div>
